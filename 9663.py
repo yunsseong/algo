@@ -1,31 +1,24 @@
-from collections import deque
-
 n = int(input())
-q = deque()
+m = [0] * n
+ans = 0
 
-dr = [-2, -2, -1, -1, 1, 1, 2, 2]
-dc = [-1, 1, -2, 2, -2, 2, -1, 1]
-cnt = 0
-qcnt = 0
-def checker(r, c):
-    global cnt, qcnt
-    q.appendleft((r, c))
-    qcnt = 0
-    m = [[0 for _ in range(n)] for _ in range(n)]
-    while len(q) > 0:
-        r, c = q.pop()
-        print(r, c)
-        for i in range(len(dr)):
-            cr, cc = r + dr[i], c + dc[i]
-
-            if 0 <= cr < n and 0 <= cc < n and m[cr][cc] != 1:
-                m[cr][cc] = 1
-                q.appendleft((cr, cc))
-                qcnt += 1
+def checker(x):
+    for i in range(x):
+        if m[x] == m[i] or abs(m[x] - m[i]) == abs(x - i):
+            return False
+    return True
 
 
-for i in range(n):
-    for j in range(n):
-        checker(i, j)
+def dfs(x):
+    global ans
+    if x == n:
+        ans += 1
 
-print(qcnt)
+    else:
+        for i in range(n):
+            m[x] = i
+            if checker(x):
+                dfs(x+1)
+
+dfs(0)
+print(ans)
